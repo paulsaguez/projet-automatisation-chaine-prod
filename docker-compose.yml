@@ -82,6 +82,6 @@ networks:
   app-network:
     driver: bridge
 
-  shared_uploads:
 volumes:
   mongodb_data:
+  shared_uploads:

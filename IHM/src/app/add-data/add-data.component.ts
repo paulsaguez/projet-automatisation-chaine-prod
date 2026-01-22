@@ -33,7 +33,7 @@ export class AddDataComponent {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
 
-      this.http.post('/traitement/upload', formData).subscribe({
+      this.http.post('/api/traitement/upload', formData).subscribe({
         next: (response: any) => {
           this.messages.push(`✅ Fichier uploadé avec succès: ${response.filename}`);
           this.selectedFile = null;
