@@ -1,0 +1,80 @@
+services:
+  # Reverse Proxy - Point d'entrée unique sur le port 8080
+  nginx:
+    image: nginx:alpine
+    container_name: reverse-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ihm
+      - traitement
+      - api
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Interface utilisateur Angular
+  ihm:
+    build:
+      context: ./IHM
+      dockerfile: Dockerfile
+    container_name: ihm-angular
+    expose:
+      - "80"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Traitement de données FastAPI
+  traitement:
+    build:
+      context: ./TRAITEMENT
+      dockerfile: Dockerfile
+    container_name: traitement-fastapi
+    expose:
+      - "8000"
+    environment:
+      - API_URL=http://api:5000
+      - MONGODB_URL=mongodb://mongodb:27017
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # API C# pour interaction BDD
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: api-csharp
+    expose:
+      - "5000"
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017
+      - MONGODB_DATABASE_NAME=production_db
+      - ASPNETCORE_URLS=http://+:5000
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Base de données MongoDB
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    expose:
+      - "27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
