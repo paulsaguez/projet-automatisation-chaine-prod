@@ -1,0 +1,39 @@
+# General
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# C# / .NET
+bin/
+obj/
+.vs/
+*.user
+*.pdb
+*.cache
+*.dll
+*.exe
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Node.js / Angular
+node_modules/
+dist/
+.angular/
+npm-debug.log
+yarn-error.log
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Data Files (Avoid commiting large CSVs if not intended example data)
+# Comment out if you want to commit the specific CSV
+# *.csv
