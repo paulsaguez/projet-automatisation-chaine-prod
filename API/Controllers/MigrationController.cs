@@ -23,9 +23,9 @@ namespace API.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<List<MigrationReport>> Search([FromQuery] string? title, [FromQuery] string? status)
+        public async Task<List<MigrationReport>> Search([FromQuery] MigrationReport filter)
         {
-            return await _migrationService.SearchAsync(title, status);
+            return await _migrationService.SearchAsync(filter);
         }
     }
 }

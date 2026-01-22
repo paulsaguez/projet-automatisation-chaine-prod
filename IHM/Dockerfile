@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build --configuration=production
 
 # Étape 2: Serveur Nginx pour servir l'application
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
 # Copie de la configuration Nginx personnalisée
 COPY nginx.conf /etc/nginx/conf.d/default.conf
@@ -20,7 +20,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copie des fichiers buildés depuis l'étape précédente
 COPY --from=build /app/dist/ihm/browser /usr/share/nginx/html
 
-# Expose le port 80
-EXPOSE 80
+# Expose le port 8080 (unprivileged uses 8080 by default)
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
