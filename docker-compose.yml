@@ -23,6 +23,8 @@ services:
     container_name: ihm-angular
     expose:
       - "80"
+    volumes:
+      - shared_uploads:/app/uploads
     networks:
       - app-network
     restart: unless-stopped
@@ -35,6 +37,8 @@ services:
     container_name: traitement-fastapi
     expose:
       - "8000"
+    volumes:
+      - shared_uploads:/app/uploads
     environment:
       - API_URL=http://api:5000
       - MONGODB_URL=mongodb://mongodb:27017
@@ -48,6 +52,8 @@ services:
       context: ./API
       dockerfile: Dockerfile
     container_name: api-csharp
+    volumes:
+      - shared_uploads:/app/uploads
     expose:
       - "5000"
     environment:
@@ -76,5 +82,6 @@ networks:
   app-network:
     driver: bridge
 
+  shared_uploads:
 volumes:
   mongodb_data:

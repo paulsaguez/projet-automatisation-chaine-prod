@@ -12,6 +12,13 @@
         <p>Glissez votre fichier CSV ici ou cliquez pour parcourir</p>
         <input type="file" (change)="onFileSelected($event)" accept=".csv" />
       </div>
+      <button 
+        class="btn-upload" 
+        [disabled]="!selectedFile || isUploading"
+        (click)="onUpload()">
+        <span *ngIf="!isUploading">📤 Envoyer le fichier</span>
+        <span *ngIf="isUploading">⏳ Upload en cours...</span>
+      </button>
     </div>
 
     <div class="messages-area" *ngIf="messages.length > 0">
