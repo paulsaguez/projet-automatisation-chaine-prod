@@ -27,5 +27,11 @@ namespace API.Controllers
         {
             return await _migrationService.SearchAsync(filter);
         }
+
+        [HttpPost("check")]
+        public async Task<List<string>> Check([FromBody] List<string> hashes)
+        {
+            return await _migrationService.GetExistingHashesAsync(hashes);
+        }
     }
 }

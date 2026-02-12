@@ -7,6 +7,16 @@
 
   <main>
     <div class="search-area">
+      <div class="search-bar-container" style="margin-bottom: 20px">
+        <input
+          type="text"
+          [(ngModel)]="filters.globalSearch"
+          placeholder="Recherche globale (titre, commentaire, IDs...)..."
+          class="search-input global-search"
+          style="width: 100%; padding: 10px; font-size: 1.1em"
+        />
+      </div>
+
       <div class="filters-grid">
         <div class="form-group">
           <label>Titre</label>

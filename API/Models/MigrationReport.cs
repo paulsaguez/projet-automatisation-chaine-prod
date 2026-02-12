@@ -48,5 +48,11 @@ namespace API.Models
 
         [BsonElement("error_code")]
         public string? ErrorCode { get; set; }
+
+        [BsonElement("hash")]
+        public string? Hash { get; set; }
+
+        [BsonIgnore]
+        public string? GlobalSearch { get; set; }
     }
 }

@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search-data.component.scss',
 })
 export class SearchDataComponent {
-  // Filters
   filters: any = {
     title: '',
     status: '',
@@ -25,6 +24,7 @@ export class SearchDataComponent {
     destinationId: '',
     errorCode: '',
     migrationStartTime: '',
+    globalSearch: '',
   };
 
   results: any[] = [];
@@ -69,6 +69,7 @@ export class SearchDataComponent {
       destinationId: '',
       errorCode: '',
       migrationStartTime: '',
+      globalSearch: '',
     };
     this.results = [];
     this.hasSearched = false;
