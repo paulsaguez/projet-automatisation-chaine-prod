@@ -1,0 +1,82 @@
+sequenceDiagram
+    actor User
+    participant Angular as IHM (Angular)
+    participant Python as Traitement (Python)
+    participant API as C# API
+    participant Mongo as MongoDB
+
+    box "Frontend" #f9f9f9
+        participant Angular
+    end
+    box "Backend Services" #e1f5fe
+        participant Python
+        participant API
+    end
+    box "Database" #ffe0b2
+        participant Mongo
+    end
+
+    %% Workflow 1: File Upload & Processing
+    rect Copyright Upload & Processing
+        User->>Angular: Select CSV File
+        activate Angular
+        Angular->>Angular: Slice File into Chunks
+        
+        loop For Each Chunk
+            Angular->>Python: POST /upload_chunk (chunk_index, file)
+            activate Python
+            Python-->>Angular: 200 OK (Chunk Received)
+            deactivate Python
+        end
+        
+        Angular-->>User: Upload Complete
+        deactivate Angular
+
+        note right of Python: Background Task Triggered
+
+        activate Python
+        Python->>Python: Reassemble File & Read CSV
+        Python->>Python: Calculate Hashes for Rows
+
+        Python->>API: POST /api/migration/check (List<Hash>)
+        activate API
+        API->>Mongo: Find({ Hash: { $in: [hashes] } })
+        activate Mongo
+        Mongo-->>API: Return Existing Hashes
+        deactivate Mongo
+        API-->>Python: Return List of Existing Hashes
+        deactivate API
+
+        Python->>Python: Filter Out Existing Records
+        
+        par Parallel Insert
+            Python->>API: POST /api/migration (New Reports)
+            activate API
+            API->>Mongo: InsertMany(Reports)
+            activate Mongo
+            Mongo-->>API: Success
+            deactivate Mongo
+            API-->>Python: 201 Created
+            deactivate API
+        end
+        deactivate Python
+    end
+
+    %% Workflow 2: Search Data
+    rect Copyright Search & Visualization
+        User->>Angular: Enter Search Criteria
+        activate Angular
+        Angular->>API: GET /api/data/migration/search?filters
+        activate API
+        
+        API->>Mongo: Find(Filters)
+        activate Mongo
+        Mongo-->>API: Return Documents
+        deactivate Mongo
+        
+        API-->>Angular: Return JSON Results
+        deactivate API
+        
+        Angular-->>User: Display Data Table
+        deactivate Angular
+    end

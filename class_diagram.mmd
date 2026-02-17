@@ -1,0 +1,75 @@
+classDiagram
+    %% API (C#) Classes
+    class MigrationReport {
+        +string Id
+        +string MigrationStartTime
+        +string SubJobId
+        +string Title
+        +string Type
+        +string SourceId
+        +string Source
+        +string DestinationId
+        +string Destination
+        +string Size
+        +string Status
+        +string MigrationAction
+        +string Comment
+        +string ErrorCode
+        +string Hash
+        +string GlobalSearch
+    }
+
+    class MigrationService {
+        -IMongoCollection~MigrationReport~ _migrationCollection
+        +CreateAsync(MigrationReport)
+        +CreateManyAsync(List~MigrationReport~)
+        +GetAsync()
+        +SearchAsync(MigrationReport)
+        +GetExistingHashesAsync(List~string~)
+    }
+
+    class MigrationController {
+        -MigrationService _migrationService
+        +Post(List~MigrationReport~)
+        +Search(MigrationReport)
+        +Check(List~string~)
+    }
+
+    class DataController {
+        -IMongoDatabase _database
+        +Get()
+        +GetCollections()
+    }
+
+    %% Relationships in API
+    MigrationController --> MigrationService : uses
+    MigrationService --> MigrationReport : manages
+
+    %% TRAITEMENT (Python)
+    class ServiceTraitement {
+        <<Python FastAPI>>
+        +root()
+        +health_check()
+        +process_file_background(path, filename)
+        +upload_chunk(file, upload_id, chunk_index, total_chunks)
+    }
+
+    %% IHM (Angular)
+    class AddDataComponent {
+        <<Angular Component>>
+        +File selectedFile
+        +onFileSelected(event)
+        +onUpload()
+    }
+
+    class SearchDataComponent {
+        <<Angular Component>>
+        +Object filters
+        +search()
+        +clearFilters()
+    }
+
+    %% System Interactions
+    ServiceTraitement ..> MigrationController : sends data (HTTP POST)
+    SearchDataComponent ..> MigrationController : calls search (HTTP GET)
+    AddDataComponent ..> ServiceTraitement : uploads file (HTTP POST)
