@@ -1,63 +1,74 @@
-# Projet Automatisation de la Chaîne de Programmation
+# Projet Automatisation de la Chaîne de Production
 
-Ce projet a pour but de gérer la migration et l'analyse de rapports Google Drive à l'aide d'une architecture microservices.
+Ce projet met en œuvre une architecture microservices pour automatiser l'ingestion, le traitement et la visualisation de rapports de migration (Google Drive). Il a été conçu dans le cadre du module "Automatisation de la chaîne de programmation".
 
-## Équipe
+## 🚀 Fonctionnalités
 
-- Théo TORNATORE
-- Paul SAGUEZ
-  (Groupe BUT3-ALT)
+- **Ingestion asynchrone** : Traitement des fichiers CSV lourds en arrière-plan via FastAPI.
+- **Recherche avancée** : Filtrage multicritères (Titre, Source, Destination, Statut, etc.) sur les rapports migrés.
+- **Architecture microservices** : Séparation claire des responsabilités (Frontend, Backend, Traitement, Base de données).
+- **Conteneurisation complète** : Déploiement simplifié via Docker Compose.
+- **Point d'entrée unique** : Reverse proxy Nginx exposant l'application sur un seul port (8080).
 
-## Architecture
+## 🛠 Architecture Technique
 
-Le projet est composé de plusieurs services orchestrés par Docker Compose :
+Le projet repose sur 4 services principaux orchestrés via Docker :
 
-- **IHM (Angular)** : Interface utilisateur pour visualiser et rechercher les rapports.
-- **API (C# .NET 8)** : Backend gérant la communication avec la base de données MongoDB.
-- **TRAITEMENT (Python/FastAPI)** : Service d'ingestion et de traitement du fichier CSV source.
-- **MongoDB** : Base de données NoSQL pour le stockage des rapports.
-- **Nginx** : Reverse proxy exposant l'ensemble des services sur le port 8080.
+| Service        | Technologie      | Rôle                                 | Port Interne      |
+| -------------- | ---------------- | ------------------------------------ | ----------------- |
+| **IHM**        | Angular 16+      | Interface utilisateur responsive     | 8080              |
+| **API**        | .NET 8 (C#)      | Gestion des données et règles métier | 5000              |
+| **TRAITEMENT** | Python (FastAPI) | Parsing CSV et ingestion asynchrone  | 8000              |
+| **BDD**        | MongoDB          | Stockage NoSQL des rapports          | 27017             |
+| **Proxy**      | Nginx            | Reverse proxy et routage             | **8080 (Public)** |
 
-## Prérequis
+## 📋 Prérequis
 
-- Docker Desktop ou Docker Engine & Docker Compose installés.
-- (Optionnel) .NET 8 SDK pour le développement local de l'API.
-- (Optionnel) Node.js pour le développement local de l'IHM.
+- **Docker** et **Docker Compose** installés sur la machine.
+- Le fichier de données source `GDriveMigrationReport_...csv` doit être présent à la racine du projet (ou configuré dans le volume partagé).
 
-## Installation et Démarrage
+## 🔧 Installation et Démarrage
 
 1. **Cloner le dépôt** :
 
    ```bash
-   git clone <votre-repo-url>
+   git clone <url-du-repo>
    cd projet-automatisation-chaine-prod
    ```
 
-2. **Placer le fichier source** :
-   Assurez-vous que le fichier `GDriveMigrationReport_20251127140429003_Google Drive objects.csv` est présent à la racine (ou configurez le chemin dans le service de traitement).
+2. **Démarrer l'application** :
 
-3. **Lancer les services** :
    ```bash
-   docker-compose up --build
+   docker-compose up --build -d
    ```
 
-## Utilisation
+   _L'option `--build` assure que les images sont reconstruites, et `-d` lance les conteneurs en arrière-plan._
 
-Une fois les services démarrés :
+3. **Accéder à l'application** :
+   - Ouvrez votre navigateur sur : [http://localhost:8080](http://localhost:8080)
 
-- **Application Web** : Accessible sur `http://localhost:8080`.
-- **API Swagger** : Documentation de l'API C# accessible sur `http://localhost:5000/swagger` (ou via le proxy si configuré).
-- **API Traitement** : Accessible sur `http://localhost:8000/docs` (FastAPI Swagger).
+## 📂 Structure du Projet
 
-## Endpoints API C# (.NET)
+```
+.
+├── API/              # Backend .NET (Controllers, Models, Services)
+├── IHM/              # Frontend Angular (Pages, Composants)
+├── TRAITEMENT/       # Service Python (FastAPI, Pandas)
+├── nginx/            # Configuration du Reverse Proxy
+├── docker-compose.yml # Orchestration des conteneurs
+└── README.md         # Documentation du projet
+```
 
-- `POST /api/migration` : Enregistrement de rapports de migration.
-- `GET /api/migration/search` : Recherche de rapports par titre ou statut.
+## 🔍 Utilisation
 
-## Structure du Projet
+1. **Page d'accueil** : Vue d'ensemble ou upload de nouveaux fichiers (selon implémentation).
+2. **Recherche** :
+   - Naviguez vers la page de recherche.
+   - Utilisez la barre de recherche globale ou les filtres spécifiques (Statut, Source/Destination, etc.).
+   - Les résultats s'affichent dynamiquement sous forme de tableau.
 
-- `/API` : Code source C# .NET.
-- `/IHM` : Code source Angular.
-- `/TRAITEMENT` : Code source Python.
-- `/BDD` : Scripts ou documentation liés à la base de données.
-- `/nginx` : Configuration du reverse proxy.
+## 👥 Auteurs
+
+- **Théo TORNATORE**
+- **Paul SAGUEZ**
+  _(Groupe BUT3-ALT)_

@@ -34,5 +34,5 @@ public class DataController : ControllerBase
         return Ok(collections);
     }
 
-    // TODO: Ajouter vos endpoints d'interaction avec la BDD ici
+
 }
