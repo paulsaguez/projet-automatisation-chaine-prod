@@ -2,7 +2,7 @@
 
 Ce projet met en œuvre une architecture microservices pour automatiser l'ingestion, le traitement et la visualisation de rapports de migration (Google Drive). Il a été conçu dans le cadre du module "Automatisation de la chaîne de programmation".
 
-## 🚀 Fonctionnalités
+## Fonctionnalités
 
 - **Ingestion asynchrone** : Traitement des fichiers CSV lourds en arrière-plan via FastAPI.
 - **Recherche avancée** : Filtrage multicritères (Titre, Source, Destination, Statut, etc.) sur les rapports migrés.
@@ -22,21 +22,14 @@ Le projet repose sur 4 services principaux orchestrés via Docker :
 | **BDD**        | MongoDB          | Stockage NoSQL des rapports          | 27017             |
 | **Proxy**      | Nginx            | Reverse proxy et routage             | **8080 (Public)** |
 
-## 📋 Prérequis
+## Prérequis
 
 - **Docker** et **Docker Compose** installés sur la machine.
 - Le fichier de données source `GDriveMigrationReport_...csv` doit être présent à la racine du projet (ou configuré dans le volume partagé).
 
-## 🔧 Installation et Démarrage
+## Installation et Démarrage
 
-1. **Cloner le dépôt** :
-
-   ```bash
-   git clone <url-du-repo>
-   cd projet-automatisation-chaine-prod
-   ```
-
-2. **Démarrer l'application** :
+1. **Démarrer l'application** :
 
    ```bash
    docker-compose up --build -d
@@ -44,10 +37,10 @@ Le projet repose sur 4 services principaux orchestrés via Docker :
 
    _L'option `--build` assure que les images sont reconstruites, et `-d` lance les conteneurs en arrière-plan._
 
-3. **Accéder à l'application** :
+2. **Accéder à l'application** :
    - Ouvrez votre navigateur sur : [http://localhost:8080](http://localhost:8080)
 
-## 📂 Structure du Projet
+## Structure du Projet
 
 ```
 .
@@ -59,7 +52,7 @@ Le projet repose sur 4 services principaux orchestrés via Docker :
 └── README.md         # Documentation du projet
 ```
 
-## 🔍 Utilisation
+## Utilisation
 
 1. **Page d'accueil** : Vue d'ensemble ou upload de nouveaux fichiers (selon implémentation).
 2. **Recherche** :
@@ -67,7 +60,7 @@ Le projet repose sur 4 services principaux orchestrés via Docker :
    - Utilisez la barre de recherche globale ou les filtres spécifiques (Statut, Source/Destination, etc.).
    - Les résultats s'affichent dynamiquement sous forme de tableau.
 
-## 👥 Auteurs
+## Auteurs
 
 - **Théo TORNATORE**
 - **Paul SAGUEZ**
